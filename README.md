@@ -1,4 +1,4 @@
-#UTP7
+# UTP7
 
 Stworzyć i przetestować (w metodzie main(...)) klasę Dictionary reprezentującą proste słowniki pojęć oraz umożliwiającą szybkie wykonanie operacji na nich. Dane do słownika są pobrane z pliku tekstowego, w którym każdy poprawny wiersz jest postaci:
 
