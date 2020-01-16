@@ -1,173 +1,29 @@
-# UTP07
+#UTP7
 
-Firma software'owa prowadzi projekty w różnych językach programowania.
-Plik Prpgrammers.tsv z katalogu {user.home} zawiera informacje o programistach w postaci:
+Stworzyć i przetestować (w metodzie main(...)) klasę Dictionary reprezentującą proste słowniki pojęć oraz umożliwiającą szybkie wykonanie operacji na nich. Dane do słownika są pobrane z pliku tekstowego, w którym każdy poprawny wiersz jest postaci:
 
+hasło = definicja
 
-    język1<TAB>nazwisko(1)<TAB>nazwisko(2)<TAB> itd
-    język2<TAB>nazwisko(1)<TAB>nazwisko(2)<TAB> itd
-    ...
+przy czym jedno hasło może mieć kilka różnych definicji.
 
-Stworzyć klasę ProgLang, mającą:
-
-konstruktor ProgLang(String nazwaPliku), w którym następuje wczytanie pliku o podanej nazwie,
-
-metodę getLangsMap() - zwracająca mapę, w której pod kluczem nazwa języka znajduje się kolekcja programistów tego języka,
-
-metodę getProgsMap() - zwracającą mapę, w której pod kluczem nazwisko programisty znajduje się kolekcja języków, w których programuje,
-
-metodę getLangsMapSortedByNumOfProgs()  - zwracającą mapę z wejściami  język -> kolekcja programistów. uporządkowaną malejąco według liczby osób znających poszczególne języki, w przypadku równej liczbu porządek jest alfabetyczny wg nazw języków,
-
-metodę getProgsMapSortedByNumOfLangs() - zwracającą mapę z wejścimi programista -> kolekcja językow, uporządkowaną malejąco wg liczby języków znanych programiści; w przypadku równej liczby porządek jest alfabetyczny wg nazwisk,
-
-metodę getProgsMapForNumOfLangsGreaterThan(int n) - zwracającą mapę z wejściami programista -> kolekcja języków, dla ktorych liczba języków jest większa od podanego n.
-
-metodę sorted(...), wołaną z argumentami mapa i lambda-wyrażenie. Metoda zwraca posortowaną wersję dowolnej mapy przekazanej jako piewrszy argument, a porządek sortowania jest określony przez lambda wyrażenia, podane jako drugi argument,
-
-metodę filtered(...) z argumentami: dowolna mapa i  lambda. Metoda zwraca  mapę, która zawiera tylko te wejścia z przekazanej jako pierwszy argument mapy, które spelniają warunek podany jako drugi argument (lambda z wynikiem typu boolean).
-
-Metod sorted(...) lub filtered(...) użyć w oprogramowaniu innych, odpowiednich, metod klasy. Mają one jednak ogólniejsze znaczenia, bo mogą być używane dla dowolnych innych map  z warunkami sortowania czy filtrowania, zadawanymi przez własściwe w danych przypadkach lambdy.
-
-Uwaga: uniwersalność metod sorted i filtered )możliwość ich zasobędzie sprawdzana
-
-
-Poniższa klasa Main (ktorej w projekcie nie wolno modyfikować):
-
-      import java.io.*;
-
-      public class Main {
-
-        public static void main(String[] args) throws IOException {
-          ProgLang pl = null;
-          try {
-            pl =  new ProgLang(System.getProperty("user.home") + "/Programmers.tsv");
-          } catch (Exception exc) {
-            System.out.println("Wadliwy konstruktor: " + exc);
-          }
-          System.out.println("@1 Mapa językow:");
-          pl.getLangsMap().forEach((k,v)->System.out.println(k+ " = " + v));
-          System.out.println("@2 Mapa programistów:");
-          pl.getProgsMap().forEach((k,v)->System.out.println(k+ " = " + v));
-          System.out.println("@3 Języki posortowane wg liczby programistów:");
-          pl.getLangsMapSortedByNumOfProgs()
-            .forEach((k,v)->System.out.println(k+ " = " + v));
-          System.out.println("@4 Programiści posortowani wg liczby języków:");
-          pl.getProgsMapSortedByNumOfLangs()
-            .forEach((k,v)->System.out.println(k+ " = " + v));
-          System.out.println("@5 Oryginalna mapa języków niezmieniona:");
-          pl.getLangsMap().forEach((k,v)->System.out.println(k+ " = " + v));
-          System.out.println("@6 Oryginalna mapa programistów niezmienione:");
-          pl.getProgsMap().forEach((k,v)->System.out.println(k+ " = " + v));
-          System.out.println("@7 Mapa programistów znających więcej niż 1 język:");
-          pl.getProgsMapForNumOfLangsGreaterThan(1)
-            .forEach((k,v)->System.out.println(k+ " = " + v));
-          System.out.println("@8 Oryginalna mapa programistów nie jest zmieniona:");
-          pl.getProgsMap().forEach((k,v)->System.out.println(k+ " = " + v));
-        }
-
-      }
-
-
-dla nastepującej zawartości pliku Programmers.tsv:
-
-    Groovy	Z	Y	X	D
-    Java	V	B	C	D	A	Z
-    C++	G	J	H
-    C#	P	S	Q	V	D
-    Scala	A	D	A
-    
-(uwaga: sepratorami są znaki tabulacji)
-
-wyprowadzi na konsolę wynik:
-
-    @1 Mapa językow:
-    Groovy = [Z, Y, X, D]
-    Java = [V, B, C, D, A, Z]
-    C++ = [G, J, H]
-    C# = [P, S, Q, V, D]
-    Scala = [A, D]
-    @2 Mapa programistów:
-    Z = [Groovy, Java]
-    Y = [Groovy]
-    X = [Groovy]
-    D = [Groovy, Java, C#, Scala]
-    V = [Java, C#]
-    B = [Java]
-    C = [Java]
-    A = [Java, Scala]
-    G = [C++]
-    J = [C++]
-    H = [C++]
-    P = [C#]
-    S = [C#]
-    Q = [C#]
-    @3 Języki posortowane wg liczby programistów:
-    Java = [V, B, C, D, A, Z]
-    C# = [P, S, Q, V, D]
-    Groovy = [Z, Y, X, D]
-    C++ = [G, J, H]
-    Scala = [A, D]
-    @4 Programiści posortowani wg liczby języków:
-    D = [Groovy, Java, C#, Scala]
-    A = [Java, Scala]
-    V = [Java, C#]
-    Z = [Groovy, Java]
-    B = [Java]
-    C = [Java]
-    G = [C++]
-    H = [C++]
-    J = [C++]
-    P = [C#]
-    Q = [C#]
-    S = [C#]
-    X = [Groovy]
-    Y = [Groovy]
-    @5 Oryginalna mapa języków niezmieniona:
-    Groovy = [Z, Y, X, D]
-    Java = [V, B, C, D, A, Z]
-    C++ = [G, J, H]
-    C# = [P, S, Q, V, D]
-    Scala = [A, D]
-    @6 Oryginalna mapa programistów niezmienione:
-    Z = [Groovy, Java]
-    Y = [Groovy]
-    X = [Groovy]
-    D = [Groovy, Java, C#, Scala]
-    V = [Java, C#]
-    B = [Java]
-    C = [Java]
-    A = [Java, Scala]
-    G = [C++]
-    J = [C++]
-    H = [C++]
-    P = [C#]
-    S = [C#]
-    Q = [C#]
-    @7 Mapa programistów znających więcej niż 1 język:
-    Z = [Groovy, Java]
-    D = [Groovy, Java, C#, Scala]
-    V = [Java, C#]
-    A = [Java, Scala]
-    @8 Oryginalna mapa programistów nie jest zmieniona:
-    Z = [Groovy, Java]
-    Y = [Groovy]
-    X = [Groovy]
-    D = [Groovy, Java, C#, Scala]
-    V = [Java, C#]
-    B = [Java]
-    C = [Java]
-    A = [Java, Scala]
-    G = [C++]
-    J = [C++]
-    H = [C++]
-    P = [C#]
-    S = [C#]
-    Q = [C#]
+Nazwa pliku jest obowiązkowa: dictionary.txt, należy samodzielnie utworzyć plik i umieścić go w katalogu {user.home}.Niespełnienie tego warunku skutkuje brakiem punktów.
 
 
 
-Ważne uwagi:
+Klasa Dictionary powinna posiadać między innymi konstruktor oraz metody podane poniżej:
 
-zgodność informacji wyjściowej z oczekiwanym wynikiem (w tym kolejność pokazywania danych)  jest istotna - wynika z zastosowania odpowiednich map i innych klas kolekcyjnych, za niezgodność w którymkolwiek z punktów 1-8 będą odejmowane 2 punkty,
-uniwersalność metod sorted i filtered (możliwość ich zastosowania dla innych niż w zadaniu map) będzie sprawdzana; brak uniwersalności każdej z metod skutkuje odjęciem 4 punktów,
-w klasie ProgLang  nie wolno używac surowych typów.
+a. konstruktor - tworzy słownik czytając plik wejściowy, zawierający hasła z definicjami. Niepoprawne składniowo wiersze pliku wejściowego są ignorowane podczas czytania.
+
+b. lookup - dla danego hasła zwraca kolekcję dostępnych, ponumerowanych (od 1) definicji. Kolekcja ta jest posortowana według porządku leksykograficznego definicji. Przykład wywołania: lookup("java").
+
+c. add - dodaje do słownika hasło z definicją (o ile nie było ich wcześniej w słowniku). Przykład wywołania: add("java", "programming language").
+
+d. delete - usuwa ze słownika podane hasło z definicją, wskazaną przez numer porządkowy (patrz. punkt b.). Przykład wywołania: delete("java", 2);
+
+e. update - aktualizuje słownik, zamieniając dla podanego hasła podaną starą definicję na nową, podaną definicję. Przykład wywołania: update("java", "programming language", "coffee").
+
+f. save - zapisuje aktualny stan słownika do pliku wyjściowego/wejściowego.
+
+
+
+W rozwiązaniu zadania, oprócz poprawności dzialania programu, należy zwrócić szczególną uwagę na użycie odpowiednich typów kolekcji (listy, mapy, zbiory, ...) oraz na obsługę błędów. Niewykonanie testów skutkuje brakiem punktów.
